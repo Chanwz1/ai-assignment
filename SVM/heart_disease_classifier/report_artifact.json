@@ -1,0 +1,979 @@
+{
+  "surface": "report",
+  "manifest": {
+    "version": 1,
+    "surface": "report",
+    "title": "Leakage-Safe SVM Heart Disease Analysis",
+    "description": "Technical validation of the final SVM classifier and current synthetic dataset.",
+    "generatedAt": "2026-08-18T05:59:53.018556+00:00",
+    "filters": [],
+    "cards": [
+      {
+        "id": "card_accuracy",
+        "dataset": "summary",
+        "sourceId": "summary_source",
+        "description": "Correct classifications on the one-time 10,000-row test evaluation.",
+        "metrics": [
+          {
+            "label": "Test accuracy",
+            "field": "accuracy",
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "id": "card_precision",
+        "dataset": "summary",
+        "sourceId": "summary_source",
+        "description": "Positive predictive value for Heart_Disease=1.",
+        "metrics": [
+          {
+            "label": "Precision",
+            "field": "precision",
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "id": "card_recall",
+        "dataset": "summary",
+        "sourceId": "summary_source",
+        "description": "Sensitivity for Heart_Disease=1.",
+        "metrics": [
+          {
+            "label": "Recall",
+            "field": "recall",
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "id": "card_f1",
+        "dataset": "summary",
+        "sourceId": "summary_source",
+        "description": "Harmonic mean of precision and recall.",
+        "metrics": [
+          {
+            "label": "F1",
+            "field": "f1",
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "id": "card_roc_auc",
+        "dataset": "summary",
+        "sourceId": "summary_source",
+        "description": "Ranking performance from SVC decision scores.",
+        "metrics": [
+          {
+            "label": "ROC-AUC",
+            "field": "roc_auc",
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "id": "card_cv_accuracy",
+        "dataset": "summary",
+        "sourceId": "summary_source",
+        "description": "Mean accuracy across five full-training folds.",
+        "metrics": [
+          {
+            "label": "CV accuracy",
+            "field": "cv_accuracy",
+            "format": "percent"
+          }
+        ]
+      }
+    ],
+    "charts": [
+      {
+        "id": "performance_chart",
+        "title": "SVM accuracy compared with the majority baseline",
+        "subtitle": "Full-training CV mean and one-time held-out test accuracy",
+        "showDescription": true,
+        "type": "bar",
+        "dataset": "performance",
+        "sourceId": "performance_source",
+        "encodings": {
+          "x": {
+            "field": "metric",
+            "type": "nominal",
+            "label": "Evaluation"
+          },
+          "y": {
+            "field": "accuracy",
+            "type": "quantitative",
+            "format": "percent",
+            "label": "Accuracy"
+          },
+          "tooltip": [
+            {
+              "field": "scope",
+              "type": "text",
+              "label": "Scope"
+            },
+            {
+              "field": "records",
+              "type": "quantitative",
+              "label": "Records"
+            }
+          ]
+        },
+        "yAxisTitle": "Accuracy",
+        "valueFormat": "percent",
+        "referenceLines": [
+          {
+            "value": 0.8,
+            "label": "Assignment requirement"
+          }
+        ]
+      },
+      {
+        "id": "bmi_chart",
+        "title": "Five-fold SVM accuracy by BMI treatment",
+        "subtitle": "Fixed 12,000-row stratified subset of the training partition",
+        "showDescription": true,
+        "type": "bar",
+        "dataset": "bmi_variants",
+        "sourceId": "bmi_source",
+        "encodings": {
+          "x": {
+            "field": "variant",
+            "type": "nominal",
+            "label": "BMI treatment"
+          },
+          "y": {
+            "field": "mean_cv_accuracy",
+            "type": "quantitative",
+            "format": "percent",
+            "label": "Mean CV accuracy"
+          },
+          "tooltip": [
+            {
+              "field": "std_cv_accuracy",
+              "type": "quantitative",
+              "label": "CV standard deviation"
+            },
+            {
+              "field": "sample_size",
+              "type": "quantitative",
+              "label": "Training rows"
+            }
+          ]
+        },
+        "yAxisTitle": "Mean CV accuracy",
+        "valueFormat": "percent"
+      }
+    ],
+    "tables": [
+      {
+        "id": "confusion_table",
+        "title": "Final SVM confusion matrix",
+        "subtitle": "Rows are actual labels; columns are predicted labels",
+        "showDescription": true,
+        "dataset": "confusion",
+        "sourceId": "confusion_source",
+        "density": "spacious",
+        "defaultSort": {
+          "field": "actual_class",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "actual_class",
+            "label": "Actual class",
+            "type": "number"
+          },
+          {
+            "field": "predicted_0",
+            "label": "Predicted 0",
+            "type": "number"
+          },
+          {
+            "field": "predicted_1",
+            "label": "Predicted 1",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "id": "tuning_table",
+        "title": "Training-only randomized-search candidates",
+        "subtitle": "16 RBF configurations, five stratified folds per candidate",
+        "showDescription": true,
+        "dataset": "tuning",
+        "sourceId": "tuning_source",
+        "density": "compact",
+        "defaultSort": {
+          "field": "rank",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "rank",
+            "label": "Rank",
+            "type": "number"
+          },
+          {
+            "field": "C",
+            "label": "C",
+            "type": "number"
+          },
+          {
+            "field": "gamma",
+            "label": "Gamma",
+            "type": "text"
+          },
+          {
+            "field": "class_weight",
+            "label": "Class weight",
+            "type": "text"
+          },
+          {
+            "field": "mean_cv_accuracy",
+            "label": "Mean CV accuracy",
+            "type": "percent",
+            "format": "percent"
+          },
+          {
+            "field": "std_cv_accuracy",
+            "label": "CV standard deviation",
+            "type": "percent",
+            "format": "percent"
+          }
+        ]
+      },
+      {
+        "id": "feature_table",
+        "title": "Exact input feature disposition",
+        "subtitle": "19 model inputs plus the rejected BMI field",
+        "showDescription": true,
+        "dataset": "features",
+        "sourceId": "feature_source",
+        "density": "comfortable",
+        "defaultSort": {
+          "field": "display_order",
+          "direction": "asc"
+        },
+        "columns": [
+          {
+            "field": "display_order",
+            "label": "Order",
+            "type": "number"
+          },
+          {
+            "field": "feature",
+            "label": "Feature",
+            "type": "text"
+          },
+          {
+            "field": "treatment",
+            "label": "Treatment",
+            "type": "text"
+          },
+          {
+            "field": "reason",
+            "label": "Reason",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "summary_source",
+        "label": "Final saved SVM metrics",
+        "path": "static/metrics.json",
+        "query": {
+          "engine": "SQLite in-memory transformation",
+          "language": "sql",
+          "sql": "SELECT * FROM report_summary",
+          "description": "Headline model metrics.",
+          "tables_used": [
+            "report_summary"
+          ],
+          "filters": [
+            "Metrics generated from the fixed random_state=42 training run"
+          ],
+          "metric_definitions": [
+            "Accuracy = correct classifications / evaluated records.",
+            "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+            "ROC-AUC is calculated from SVC decision_function scores."
+          ]
+        }
+      },
+      {
+        "id": "performance_source",
+        "label": "SVM accuracy and baseline",
+        "path": "static/metrics.json",
+        "query": {
+          "engine": "SQLite in-memory transformation",
+          "language": "sql",
+          "sql": "SELECT metric, accuracy, scope, records, display_order FROM report_performance ORDER BY display_order",
+          "description": "Accuracy comparison rows.",
+          "tables_used": [
+            "report_performance"
+          ],
+          "filters": [
+            "Metrics generated from the fixed random_state=42 training run"
+          ],
+          "metric_definitions": [
+            "Accuracy = correct classifications / evaluated records.",
+            "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+            "ROC-AUC is calculated from SVC decision_function scores."
+          ]
+        }
+      },
+      {
+        "id": "bmi_source",
+        "label": "Training-only BMI comparison",
+        "path": "static/metrics.json",
+        "query": {
+          "engine": "SQLite in-memory transformation",
+          "language": "sql",
+          "sql": "SELECT variant, mean_cv_accuracy, std_cv_accuracy, sample_size, display_order FROM bmi_variants ORDER BY display_order",
+          "description": "Five-fold CV results for BMI treatments.",
+          "tables_used": [
+            "bmi_variants"
+          ],
+          "filters": [
+            "Metrics generated from the fixed random_state=42 training run"
+          ],
+          "metric_definitions": [
+            "Accuracy = correct classifications / evaluated records.",
+            "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+            "ROC-AUC is calculated from SVC decision_function scores."
+          ]
+        }
+      },
+      {
+        "id": "tuning_source",
+        "label": "Training-only SVM candidate results",
+        "path": "static/metrics.json",
+        "query": {
+          "engine": "SQLite in-memory transformation",
+          "language": "sql",
+          "sql": "SELECT rank, C, gamma, class_weight, mean_cv_accuracy, std_cv_accuracy FROM tuning_candidates ORDER BY rank",
+          "description": "All 16 randomized-search candidates.",
+          "tables_used": [
+            "tuning_candidates"
+          ],
+          "filters": [
+            "Metrics generated from the fixed random_state=42 training run"
+          ],
+          "metric_definitions": [
+            "Accuracy = correct classifications / evaluated records.",
+            "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+            "ROC-AUC is calculated from SVC decision_function scores."
+          ]
+        }
+      },
+      {
+        "id": "feature_source",
+        "label": "Final model feature schema",
+        "path": "static/metrics.json",
+        "query": {
+          "engine": "SQLite in-memory transformation",
+          "language": "sql",
+          "sql": "SELECT feature, treatment, reason, display_order FROM feature_schema ORDER BY display_order",
+          "description": "Used and removed input fields.",
+          "tables_used": [
+            "feature_schema"
+          ],
+          "filters": [
+            "Metrics generated from the fixed random_state=42 training run"
+          ],
+          "metric_definitions": [
+            "Accuracy = correct classifications / evaluated records.",
+            "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+            "ROC-AUC is calculated from SVC decision_function scores."
+          ]
+        }
+      },
+      {
+        "id": "confusion_source",
+        "label": "Final held-out confusion matrix",
+        "path": "static/metrics.json",
+        "query": {
+          "engine": "SQLite in-memory transformation",
+          "language": "sql",
+          "sql": "SELECT actual_class, predicted_0, predicted_1 FROM confusion_matrix ORDER BY actual_class",
+          "description": "Untouched-test confusion counts.",
+          "tables_used": [
+            "confusion_matrix"
+          ],
+          "filters": [
+            "Metrics generated from the fixed random_state=42 training run"
+          ],
+          "metric_definitions": [
+            "Accuracy = correct classifications / evaluated records.",
+            "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+            "ROC-AUC is calculated from SVC decision_function scores."
+          ]
+        }
+      }
+    ],
+    "blocks": [
+      {
+        "id": "title",
+        "type": "markdown",
+        "body": "# Leakage-Safe SVM Heart Disease Analysis"
+      },
+      {
+        "id": "technical_summary",
+        "type": "markdown",
+        "sourceId": "summary_source",
+        "body": "## Technical Summary\n\nThe final RBF SVM legitimately exceeds the 80% requirement: **96.15% test accuracy** and **0.9954 ROC-AUC** on a single evaluation of the held-out 10,000-row test set. Five-fold accuracy on the complete training partition averaged **95.95% \u00b1 0.18 percentage points**. The previous near-random result came from loading the unrelated legacy CSV and its stale model, not from a lack of signal in the current dataset."
+      },
+      {
+        "id": "metric_strip",
+        "type": "metric-strip",
+        "cardIds": [
+          "card_accuracy",
+          "card_precision",
+          "card_recall",
+          "card_f1",
+          "card_roc_auc",
+          "card_cv_accuracy"
+        ]
+      },
+      {
+        "id": "performance_finding",
+        "type": "markdown",
+        "sourceId": "performance_source",
+        "body": "## The selected SVM clears both the requirement and the baseline\n\nTest accuracy is 42.50 percentage points above the 53.65% majority-class baseline and is consistent with training-only cross-validation. The chart shows the selection evidence and final evaluation on the same fractional scale; the 80% line is the assignment threshold."
+      },
+      {
+        "id": "performance_chart_block",
+        "type": "chart",
+        "chartId": "performance_chart"
+      },
+      {
+        "id": "confusion_finding",
+        "type": "markdown",
+        "sourceId": "confusion_source",
+        "body": "## Errors are balanced across the two outcome classes\n\nThe SVM produced 198 false positives and 187 false negatives. This balance is consistent with precision (95.74%) and recall (95.97%) being nearly equal."
+      },
+      {
+        "id": "confusion_table_block",
+        "type": "table",
+        "tableId": "confusion_table"
+      },
+      {
+        "id": "bmi_finding",
+        "type": "markdown",
+        "sourceId": "bmi_source",
+        "body": "## Removing inconsistent BMI is the defensible feature treatment\n\nSupplied BMI has only 0.003 correlation with BMI recalculated from Weight and Height, and the median absolute mismatch is 7.43 BMI units. Training-only CV was 93.82% with supplied BMI, 93.84% with recalculated BMI, and 94.00% with BMI removed. Removal is slightly best and avoids retaining a corrupted or redundant field."
+      },
+      {
+        "id": "bmi_chart_block",
+        "type": "chart",
+        "chartId": "bmi_chart"
+      },
+      {
+        "id": "scope_definitions",
+        "type": "markdown",
+        "body": "## Scope, Data, and Metric Definitions\n\nThe source is `synthetic_heart_disease_dataset.csv`: 50,000 person-level synthetic rows, 20 raw input columns, and binary target `Heart_Disease` (0 = no disease, 1 = disease). `Alcohol_Intake='None'` is preserved as a category; its 20,109 rows are not missing. Precision, recall, and F1 treat label 1 as positive. ROC-AUC uses `decision_function`, not probabilities."
+      },
+      {
+        "id": "methodology",
+        "type": "markdown",
+        "body": "## Model Specification and Validation\n\nA fixed stratified 80/20 split with `random_state=42` created 40,000 training and 10,000 test rows. `ColumnTransformer` applies median imputation and `StandardScaler` to numeric fields, plus constant imputation and `OneHotEncoder(handle_unknown='ignore')` to six categorical fields. All preprocessing is fitted inside each pipeline fold. Sixteen RBF candidates were evaluated with five-fold stratified CV on a fixed 12,000-row training-only tuning subset. The selected parameters are C=20, gamma=0.1, class_weight=None. Full-training five-fold validation preceded a single test evaluation."
+      },
+      {
+        "id": "tuning_table_block",
+        "type": "table",
+        "tableId": "tuning_table"
+      },
+      {
+        "id": "synthetic_limit",
+        "type": "markdown",
+        "body": "## The target is deterministically rule-generated, not leaked\n\nA direct rule audit across all 40,000 training rows found an exact match using Age, Hypertension, Diabetes, Previous_Heart_Attack, and Cholesterol_Total. The recovered rule is: label 1 when at least two conditions hold\u2014Age > 55, Hypertension=1, Diabetes=1, Previous_Heart_Attack=1, or Cholesterol_Total > 240. This explains the high predictability and limits real-world validity. It is not target leakage because `Heart_Disease` is absent from X, manual feature lists, preprocessing, and inference inputs."
+      },
+      {
+        "id": "feature_schema",
+        "type": "markdown",
+        "body": "## The web app, CLI, and saved pipeline use one exact schema\n\nAll interfaces import the shared schema, submit raw values in the saved pipeline's 19-column order, and never accept the target. The table is the auditable feature contract."
+      },
+      {
+        "id": "feature_table_block",
+        "type": "table",
+        "tableId": "feature_table"
+      },
+      {
+        "id": "next_steps",
+        "type": "markdown",
+        "body": "## Recommended Next Steps\n\n- Keep the dataset hash, schema assertions, alcohol-category assertion, and >=80% accuracy guard in automated tests.\n- Retrain whenever the CSV changes; do not reuse a model whose saved feature schema or dataset hash differs.\n- Treat these results as evidence about the assignment pipeline, not clinical performance."
+      },
+      {
+        "id": "further_questions",
+        "type": "markdown",
+        "body": "## Further Questions\n\nWould the assignment benefit from a second evaluation on a non-rule-generated dataset? If the synthetic generator is available, its source should be cited so the recovered threshold rule can be confirmed directly."
+      }
+    ]
+  },
+  "snapshot": {
+    "version": 1,
+    "generatedAt": "2026-08-18T05:59:53.018556+00:00",
+    "status": "ready",
+    "datasets": {
+      "summary": [
+        {
+          "accuracy": 0.9615,
+          "precision": 0.9573826947912183,
+          "recall": 0.9596548004314994,
+          "f1": 0.9585174011421183,
+          "roc_auc": 0.9954231700733207,
+          "cv_accuracy": 0.9594999999999999
+        }
+      ],
+      "performance": [
+        {
+          "metric": "Majority baseline",
+          "accuracy": 0.5365,
+          "scope": "Held-out test",
+          "records": 10000,
+          "display_order": 1
+        },
+        {
+          "metric": "5-fold CV mean",
+          "accuracy": 0.9594999999999999,
+          "scope": "Training only",
+          "records": 40000,
+          "display_order": 2
+        },
+        {
+          "metric": "Final SVM",
+          "accuracy": 0.9615,
+          "scope": "Held-out test",
+          "records": 10000,
+          "display_order": 3
+        }
+      ],
+      "bmi_variants": [
+        {
+          "variant": "Supplied",
+          "mean_cv_accuracy": 0.9381666666666666,
+          "std_cv_accuracy": 0.004997221450188302,
+          "sample_size": 12000,
+          "display_order": 1
+        },
+        {
+          "variant": "Recalculated",
+          "mean_cv_accuracy": 0.9384166666666667,
+          "std_cv_accuracy": 0.003721185593627695,
+          "sample_size": 12000,
+          "display_order": 2
+        },
+        {
+          "variant": "Removed",
+          "mean_cv_accuracy": 0.9400000000000001,
+          "std_cv_accuracy": 0.0035843021946011127,
+          "sample_size": 12000,
+          "display_order": 3
+        }
+      ],
+      "tuning": [
+        {
+          "rank": 1,
+          "C": 20,
+          "gamma": "0.1",
+          "class_weight": "None",
+          "mean_cv_accuracy": 0.9435833333333333,
+          "std_cv_accuracy": 0.006294839156007071
+        },
+        {
+          "rank": 2,
+          "C": 10,
+          "gamma": "scale",
+          "class_weight": "balanced",
+          "mean_cv_accuracy": 0.9415833333333333,
+          "std_cv_accuracy": 0.005697221545045733
+        },
+        {
+          "rank": 3,
+          "C": 20,
+          "gamma": "scale",
+          "class_weight": "None",
+          "mean_cv_accuracy": 0.9407499999999999,
+          "std_cv_accuracy": 0.0058297608107975895
+        },
+        {
+          "rank": 4,
+          "C": 10,
+          "gamma": "0.05",
+          "class_weight": "balanced",
+          "mean_cv_accuracy": 0.9405833333333333,
+          "std_cv_accuracy": 0.0048347699014534345
+        },
+        {
+          "rank": 5,
+          "C": 5,
+          "gamma": "0.05",
+          "class_weight": "None",
+          "mean_cv_accuracy": 0.9393333333333332,
+          "std_cv_accuracy": 0.0035019835649084687
+        },
+        {
+          "rank": 6,
+          "C": 20,
+          "gamma": "0.03",
+          "class_weight": "balanced",
+          "mean_cv_accuracy": 0.9383333333333332,
+          "std_cv_accuracy": 0.0042898458920778955
+        },
+        {
+          "rank": 6,
+          "C": 20,
+          "gamma": "0.03",
+          "class_weight": "None",
+          "mean_cv_accuracy": 0.9383333333333332,
+          "std_cv_accuracy": 0.0036799003609699656
+        },
+        {
+          "rank": 8,
+          "C": 0.5,
+          "gamma": "scale",
+          "class_weight": "None",
+          "mean_cv_accuracy": 0.9353333333333333,
+          "std_cv_accuracy": 0.006176793486735463
+        },
+        {
+          "rank": 9,
+          "C": 1,
+          "gamma": "0.05",
+          "class_weight": "None",
+          "mean_cv_accuracy": 0.9350833333333334,
+          "std_cv_accuracy": 0.005266508436441654
+        },
+        {
+          "rank": 10,
+          "C": 0.5,
+          "gamma": "scale",
+          "class_weight": "balanced",
+          "mean_cv_accuracy": 0.9341666666666667,
+          "std_cv_accuracy": 0.0069071219283673635
+        },
+        {
+          "rank": 10,
+          "C": 0.5,
+          "gamma": "0.05",
+          "class_weight": "None",
+          "mean_cv_accuracy": 0.9341666666666667,
+          "std_cv_accuracy": 0.006593346814950839
+        },
+        {
+          "rank": 12,
+          "C": 1,
+          "gamma": "0.03",
+          "class_weight": "None",
+          "mean_cv_accuracy": 0.932,
+          "std_cv_accuracy": 0.006777208537115851
+        },
+        {
+          "rank": 13,
+          "C": 1,
+          "gamma": "0.03",
+          "class_weight": "balanced",
+          "mean_cv_accuracy": 0.9305833333333332,
+          "std_cv_accuracy": 0.006874873736214277
+        },
+        {
+          "rank": 14,
+          "C": 5,
+          "gamma": "0.01",
+          "class_weight": "None",
+          "mean_cv_accuracy": 0.9290833333333332,
+          "std_cv_accuracy": 0.007422750313881101
+        },
+        {
+          "rank": 15,
+          "C": 10,
+          "gamma": "0.01",
+          "class_weight": "balanced",
+          "mean_cv_accuracy": 0.9288333333333334,
+          "std_cv_accuracy": 0.007680241604995944
+        },
+        {
+          "rank": 16,
+          "C": 5,
+          "gamma": "0.01",
+          "class_weight": "balanced",
+          "mean_cv_accuracy": 0.9284166666666666,
+          "std_cv_accuracy": 0.007328596955306898
+        }
+      ],
+      "features": [
+        {
+          "feature": "Age",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 1
+        },
+        {
+          "feature": "Gender",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 2
+        },
+        {
+          "feature": "Weight",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 3
+        },
+        {
+          "feature": "Height",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 4
+        },
+        {
+          "feature": "Smoking",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 5
+        },
+        {
+          "feature": "Alcohol_Intake",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 6
+        },
+        {
+          "feature": "Physical_Activity",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 7
+        },
+        {
+          "feature": "Diet",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 8
+        },
+        {
+          "feature": "Stress_Level",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 9
+        },
+        {
+          "feature": "Hypertension",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 10
+        },
+        {
+          "feature": "Diabetes",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 11
+        },
+        {
+          "feature": "Hyperlipidemia",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 12
+        },
+        {
+          "feature": "Family_History",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 13
+        },
+        {
+          "feature": "Previous_Heart_Attack",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 14
+        },
+        {
+          "feature": "Systolic_BP",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 15
+        },
+        {
+          "feature": "Diastolic_BP",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 16
+        },
+        {
+          "feature": "Heart_Rate",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 17
+        },
+        {
+          "feature": "Blood_Sugar_Fasting",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 18
+        },
+        {
+          "feature": "Cholesterol_Total",
+          "treatment": "Used",
+          "reason": "Raw input; preprocessing fitted inside Pipeline",
+          "display_order": 19
+        },
+        {
+          "feature": "BMI",
+          "treatment": "Removed",
+          "reason": "Inconsistent with Weight and Height; redundant after recalculation.",
+          "display_order": 20
+        }
+      ],
+      "confusion": [
+        {
+          "actual_class": 0,
+          "predicted_0": 5167,
+          "predicted_1": 198
+        },
+        {
+          "actual_class": 1,
+          "predicted_0": 187,
+          "predicted_1": 4448
+        }
+      ]
+    },
+    "accessIssues": []
+  },
+  "sources": [
+    {
+      "id": "summary_source",
+      "label": "Final saved SVM metrics",
+      "path": "static/metrics.json",
+      "query": {
+        "engine": "SQLite in-memory transformation",
+        "language": "sql",
+        "sql": "SELECT * FROM report_summary",
+        "description": "Headline model metrics.",
+        "tables_used": [
+          "report_summary"
+        ],
+        "filters": [
+          "Metrics generated from the fixed random_state=42 training run"
+        ],
+        "metric_definitions": [
+          "Accuracy = correct classifications / evaluated records.",
+          "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+          "ROC-AUC is calculated from SVC decision_function scores."
+        ]
+      }
+    },
+    {
+      "id": "performance_source",
+      "label": "SVM accuracy and baseline",
+      "path": "static/metrics.json",
+      "query": {
+        "engine": "SQLite in-memory transformation",
+        "language": "sql",
+        "sql": "SELECT metric, accuracy, scope, records, display_order FROM report_performance ORDER BY display_order",
+        "description": "Accuracy comparison rows.",
+        "tables_used": [
+          "report_performance"
+        ],
+        "filters": [
+          "Metrics generated from the fixed random_state=42 training run"
+        ],
+        "metric_definitions": [
+          "Accuracy = correct classifications / evaluated records.",
+          "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+          "ROC-AUC is calculated from SVC decision_function scores."
+        ]
+      }
+    },
+    {
+      "id": "bmi_source",
+      "label": "Training-only BMI comparison",
+      "path": "static/metrics.json",
+      "query": {
+        "engine": "SQLite in-memory transformation",
+        "language": "sql",
+        "sql": "SELECT variant, mean_cv_accuracy, std_cv_accuracy, sample_size, display_order FROM bmi_variants ORDER BY display_order",
+        "description": "Five-fold CV results for BMI treatments.",
+        "tables_used": [
+          "bmi_variants"
+        ],
+        "filters": [
+          "Metrics generated from the fixed random_state=42 training run"
+        ],
+        "metric_definitions": [
+          "Accuracy = correct classifications / evaluated records.",
+          "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+          "ROC-AUC is calculated from SVC decision_function scores."
+        ]
+      }
+    },
+    {
+      "id": "tuning_source",
+      "label": "Training-only SVM candidate results",
+      "path": "static/metrics.json",
+      "query": {
+        "engine": "SQLite in-memory transformation",
+        "language": "sql",
+        "sql": "SELECT rank, C, gamma, class_weight, mean_cv_accuracy, std_cv_accuracy FROM tuning_candidates ORDER BY rank",
+        "description": "All 16 randomized-search candidates.",
+        "tables_used": [
+          "tuning_candidates"
+        ],
+        "filters": [
+          "Metrics generated from the fixed random_state=42 training run"
+        ],
+        "metric_definitions": [
+          "Accuracy = correct classifications / evaluated records.",
+          "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+          "ROC-AUC is calculated from SVC decision_function scores."
+        ]
+      }
+    },
+    {
+      "id": "feature_source",
+      "label": "Final model feature schema",
+      "path": "static/metrics.json",
+      "query": {
+        "engine": "SQLite in-memory transformation",
+        "language": "sql",
+        "sql": "SELECT feature, treatment, reason, display_order FROM feature_schema ORDER BY display_order",
+        "description": "Used and removed input fields.",
+        "tables_used": [
+          "feature_schema"
+        ],
+        "filters": [
+          "Metrics generated from the fixed random_state=42 training run"
+        ],
+        "metric_definitions": [
+          "Accuracy = correct classifications / evaluated records.",
+          "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+          "ROC-AUC is calculated from SVC decision_function scores."
+        ]
+      }
+    },
+    {
+      "id": "confusion_source",
+      "label": "Final held-out confusion matrix",
+      "path": "static/metrics.json",
+      "query": {
+        "engine": "SQLite in-memory transformation",
+        "language": "sql",
+        "sql": "SELECT actual_class, predicted_0, predicted_1 FROM confusion_matrix ORDER BY actual_class",
+        "description": "Untouched-test confusion counts.",
+        "tables_used": [
+          "confusion_matrix"
+        ],
+        "filters": [
+          "Metrics generated from the fixed random_state=42 training run"
+        ],
+        "metric_definitions": [
+          "Accuracy = correct classifications / evaluated records.",
+          "Precision, recall, and F1 use Heart_Disease=1 as the positive class.",
+          "ROC-AUC is calculated from SVC decision_function scores."
+        ]
+      }
+    }
+  ]
+}

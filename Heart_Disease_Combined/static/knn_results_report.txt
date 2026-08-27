@@ -1,0 +1,22 @@
+HEART DISEASE PREDICTION - KNN MODEL RESULTS (synthetic_heart_disease_dataset.csv)
+======================================================================
+Best K (from 5-fold CV, optimised for F1): 25
+Accuracy : 0.9138
+Precision: 0.9289
+Recall   : 0.8812
+F1 Score : 0.9045
+ROC-AUC  : 0.9789
+
+Classification Report:
+              precision    recall  f1-score   support
+
+  No Disease       0.90      0.94      0.92      5132
+     Disease       0.93      0.88      0.90      4421
+
+    accuracy                           0.91      9553
+   macro avg       0.92      0.91      0.91      9553
+weighted avg       0.91      0.91      0.91      9553
+
+Confusion Matrix:
+[[4834  298]
+ [ 525 3896]]

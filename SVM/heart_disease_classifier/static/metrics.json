@@ -1,0 +1,561 @@
+{
+  "generated_at_utc": "2026-08-18T05:59:53.018556+00:00",
+  "dataset": {
+    "path": "synthetic_heart_disease_dataset.csv",
+    "sha256": "4981fc17fdb431a5375e6ffa83e891972b14c4b18c2f8cbac9c39df7d65fca7a",
+    "shape": [
+      50000,
+      21
+    ],
+    "columns": [
+      "Age",
+      "Gender",
+      "Weight",
+      "Height",
+      "BMI",
+      "Smoking",
+      "Alcohol_Intake",
+      "Physical_Activity",
+      "Diet",
+      "Stress_Level",
+      "Hypertension",
+      "Diabetes",
+      "Hyperlipidemia",
+      "Family_History",
+      "Previous_Heart_Attack",
+      "Systolic_BP",
+      "Diastolic_BP",
+      "Heart_Rate",
+      "Blood_Sugar_Fasting",
+      "Cholesterol_Total",
+      "Heart_Disease"
+    ],
+    "target": "Heart_Disease",
+    "target_counts": {
+      "0": 26827,
+      "1": 23173
+    },
+    "alcohol_categories": [
+      "High",
+      "Low",
+      "Moderate",
+      "None"
+    ],
+    "alcohol_none_count": 20109,
+    "duplicate_rows": 0,
+    "true_missing_values": 0
+  },
+  "split": {
+    "random_state": 42,
+    "stratified": true,
+    "train_size": 40000,
+    "test_size": 10000,
+    "test_used_for_tuning": false,
+    "final_test_evaluations": 1
+  },
+  "input_features": [
+    "Age",
+    "Gender",
+    "Weight",
+    "Height",
+    "Smoking",
+    "Alcohol_Intake",
+    "Physical_Activity",
+    "Diet",
+    "Stress_Level",
+    "Hypertension",
+    "Diabetes",
+    "Hyperlipidemia",
+    "Family_History",
+    "Previous_Heart_Attack",
+    "Systolic_BP",
+    "Diastolic_BP",
+    "Heart_Rate",
+    "Blood_Sugar_Fasting",
+    "Cholesterol_Total"
+  ],
+  "numerical_features": [
+    "Age",
+    "Weight",
+    "Height",
+    "Hypertension",
+    "Diabetes",
+    "Hyperlipidemia",
+    "Family_History",
+    "Previous_Heart_Attack",
+    "Systolic_BP",
+    "Diastolic_BP",
+    "Heart_Rate",
+    "Blood_Sugar_Fasting",
+    "Cholesterol_Total"
+  ],
+  "categorical_features": [
+    "Gender",
+    "Smoking",
+    "Alcohol_Intake",
+    "Physical_Activity",
+    "Diet",
+    "Stress_Level"
+  ],
+  "removed_features": {
+    "BMI": "Inconsistent with Weight and Height; redundant after recalculation."
+  },
+  "target_leakage_checks": {
+    "target_absent_from_X": true,
+    "target_absent_from_manual_feature_lists": true,
+    "preprocessing_fitted_inside_pipeline": true,
+    "hardcoded_predictions": false
+  },
+  "bmi_quality": {
+    "correlation_supplied_vs_recalculated": 0.003404616705103642,
+    "mean_absolute_error": 8.53477442586598,
+    "median_absolute_error": 7.434511628862587,
+    "within_0_1_share": 0.00734,
+    "within_1_0_share": 0.07244
+  },
+  "bmi_variant_comparison": [
+    {
+      "variant": "supplied",
+      "cv_scores": [
+        0.94375,
+        0.9395833333333333,
+        0.9370833333333334,
+        0.9291666666666667,
+        0.94125
+      ],
+      "mean_cv_accuracy": 0.9381666666666666,
+      "std_cv_accuracy": 0.004997221450188302
+    },
+    {
+      "variant": "recalculated",
+      "cv_scores": [
+        0.94125,
+        0.9408333333333333,
+        0.9370833333333334,
+        0.9316666666666666,
+        0.94125
+      ],
+      "mean_cv_accuracy": 0.9384166666666667,
+      "std_cv_accuracy": 0.003721185593627695
+    },
+    {
+      "variant": "removed",
+      "cv_scores": [
+        0.9441666666666667,
+        0.9404166666666667,
+        0.9375,
+        0.9345833333333333,
+        0.9433333333333334
+      ],
+      "mean_cv_accuracy": 0.9400000000000001,
+      "std_cv_accuracy": 0.0035843021946011127
+    }
+  ],
+  "tuning": {
+    "method": "RandomizedSearchCV",
+    "selection_metric": "accuracy",
+    "sample_source": "fixed stratified subset of training partition only",
+    "sample_size": 12000,
+    "folds": 5,
+    "candidates": [
+      {
+        "rank": 1,
+        "mean_cv_accuracy": 0.9435833333333333,
+        "std_cv_accuracy": 0.006294839156007071,
+        "fold_scores": [
+          0.9458333333333333,
+          0.9483333333333334,
+          0.9420833333333334,
+          0.9320833333333334,
+          0.9495833333333333
+        ],
+        "parameters": {
+          "classifier__gamma": 0.1,
+          "classifier__class_weight": null,
+          "classifier__C": 20
+        }
+      },
+      {
+        "rank": 2,
+        "mean_cv_accuracy": 0.9415833333333333,
+        "std_cv_accuracy": 0.005697221545045733,
+        "fold_scores": [
+          0.9479166666666666,
+          0.9445833333333333,
+          0.9391666666666667,
+          0.9316666666666666,
+          0.9445833333333333
+        ],
+        "parameters": {
+          "classifier__gamma": "scale",
+          "classifier__class_weight": "balanced",
+          "classifier__C": 10
+        }
+      },
+      {
+        "rank": 3,
+        "mean_cv_accuracy": 0.9407499999999999,
+        "std_cv_accuracy": 0.0058297608107975895,
+        "fold_scores": [
+          0.94625,
+          0.9454166666666667,
+          0.9375,
+          0.9308333333333333,
+          0.94375
+        ],
+        "parameters": {
+          "classifier__gamma": "scale",
+          "classifier__class_weight": null,
+          "classifier__C": 20
+        }
+      },
+      {
+        "rank": 4,
+        "mean_cv_accuracy": 0.9405833333333333,
+        "std_cv_accuracy": 0.0048347699014534345,
+        "fold_scores": [
+          0.9479166666666666,
+          0.9408333333333333,
+          0.9391666666666667,
+          0.9329166666666666,
+          0.9420833333333334
+        ],
+        "parameters": {
+          "classifier__gamma": 0.05,
+          "classifier__class_weight": "balanced",
+          "classifier__C": 10
+        }
+      },
+      {
+        "rank": 5,
+        "mean_cv_accuracy": 0.9393333333333332,
+        "std_cv_accuracy": 0.0035019835649084687,
+        "fold_scores": [
+          0.9416666666666667,
+          0.9383333333333334,
+          0.93875,
+          0.93375,
+          0.9441666666666667
+        ],
+        "parameters": {
+          "classifier__gamma": 0.05,
+          "classifier__class_weight": null,
+          "classifier__C": 5
+        }
+      },
+      {
+        "rank": 6,
+        "mean_cv_accuracy": 0.9383333333333332,
+        "std_cv_accuracy": 0.0042898458920778955,
+        "fold_scores": [
+          0.945,
+          0.9395833333333333,
+          0.9358333333333333,
+          0.9320833333333334,
+          0.9391666666666667
+        ],
+        "parameters": {
+          "classifier__gamma": 0.03,
+          "classifier__class_weight": "balanced",
+          "classifier__C": 20
+        }
+      },
+      {
+        "rank": 6,
+        "mean_cv_accuracy": 0.9383333333333332,
+        "std_cv_accuracy": 0.0036799003609699656,
+        "fold_scores": [
+          0.9441666666666667,
+          0.9383333333333334,
+          0.9366666666666666,
+          0.9329166666666666,
+          0.9395833333333333
+        ],
+        "parameters": {
+          "classifier__gamma": 0.03,
+          "classifier__class_weight": null,
+          "classifier__C": 20
+        }
+      },
+      {
+        "rank": 8,
+        "mean_cv_accuracy": 0.9353333333333333,
+        "std_cv_accuracy": 0.006176793486735463,
+        "fold_scores": [
+          0.94125,
+          0.93625,
+          0.9325,
+          0.925,
+          0.9416666666666667
+        ],
+        "parameters": {
+          "classifier__gamma": "scale",
+          "classifier__class_weight": null,
+          "classifier__C": 0.5
+        }
+      },
+      {
+        "rank": 9,
+        "mean_cv_accuracy": 0.9350833333333334,
+        "std_cv_accuracy": 0.005266508436441654,
+        "fold_scores": [
+          0.9370833333333334,
+          0.93375,
+          0.9341666666666667,
+          0.9270833333333334,
+          0.9433333333333334
+        ],
+        "parameters": {
+          "classifier__gamma": 0.05,
+          "classifier__class_weight": null,
+          "classifier__C": 1
+        }
+      },
+      {
+        "rank": 10,
+        "mean_cv_accuracy": 0.9341666666666667,
+        "std_cv_accuracy": 0.0069071219283673635,
+        "fold_scores": [
+          0.94125,
+          0.9329166666666666,
+          0.93,
+          0.9241666666666667,
+          0.9425
+        ],
+        "parameters": {
+          "classifier__gamma": "scale",
+          "classifier__class_weight": "balanced",
+          "classifier__C": 0.5
+        }
+      },
+      {
+        "rank": 10,
+        "mean_cv_accuracy": 0.9341666666666667,
+        "std_cv_accuracy": 0.006593346814950839,
+        "fold_scores": [
+          0.9408333333333333,
+          0.9345833333333333,
+          0.9304166666666667,
+          0.92375,
+          0.94125
+        ],
+        "parameters": {
+          "classifier__gamma": 0.05,
+          "classifier__class_weight": null,
+          "classifier__C": 0.5
+        }
+      },
+      {
+        "rank": 12,
+        "mean_cv_accuracy": 0.932,
+        "std_cv_accuracy": 0.006777208537115851,
+        "fold_scores": [
+          0.9391666666666667,
+          0.9345833333333333,
+          0.9279166666666666,
+          0.9208333333333333,
+          0.9375
+        ],
+        "parameters": {
+          "classifier__gamma": 0.03,
+          "classifier__class_weight": null,
+          "classifier__C": 1
+        }
+      },
+      {
+        "rank": 13,
+        "mean_cv_accuracy": 0.9305833333333332,
+        "std_cv_accuracy": 0.006874873736214277,
+        "fold_scores": [
+          0.9379166666666666,
+          0.9329166666666666,
+          0.9275,
+          0.91875,
+          0.9358333333333333
+        ],
+        "parameters": {
+          "classifier__gamma": 0.03,
+          "classifier__class_weight": "balanced",
+          "classifier__C": 1
+        }
+      },
+      {
+        "rank": 14,
+        "mean_cv_accuracy": 0.9290833333333332,
+        "std_cv_accuracy": 0.007422750313881101,
+        "fold_scores": [
+          0.9379166666666666,
+          0.9304166666666667,
+          0.925,
+          0.9170833333333334,
+          0.935
+        ],
+        "parameters": {
+          "classifier__gamma": 0.01,
+          "classifier__class_weight": null,
+          "classifier__C": 5
+        }
+      },
+      {
+        "rank": 15,
+        "mean_cv_accuracy": 0.9288333333333334,
+        "std_cv_accuracy": 0.007680241604995944,
+        "fold_scores": [
+          0.9358333333333333,
+          0.9304166666666667,
+          0.9270833333333334,
+          0.915,
+          0.9358333333333333
+        ],
+        "parameters": {
+          "classifier__gamma": 0.01,
+          "classifier__class_weight": "balanced",
+          "classifier__C": 10
+        }
+      },
+      {
+        "rank": 16,
+        "mean_cv_accuracy": 0.9284166666666666,
+        "std_cv_accuracy": 0.007328596955306898,
+        "fold_scores": [
+          0.9354166666666667,
+          0.9304166666666667,
+          0.9283333333333333,
+          0.9145833333333333,
+          0.9333333333333333
+        ],
+        "parameters": {
+          "classifier__gamma": 0.01,
+          "classifier__class_weight": "balanced",
+          "classifier__C": 5
+        }
+      }
+    ],
+    "best_parameters": {
+      "classifier__gamma": 0.1,
+      "classifier__class_weight": null,
+      "classifier__C": 20
+    },
+    "best_subset_cv_accuracy": 0.9435833333333333
+  },
+  "full_training_cv": {
+    "scores": [
+      0.9595,
+      0.959125,
+      0.959875,
+      0.956625,
+      0.962375
+    ],
+    "mean_accuracy": 0.9594999999999999,
+    "std_accuracy": 0.0018337120820892364
+  },
+  "test_metrics": {
+    "majority_class_baseline_accuracy": 0.5365,
+    "accuracy": 0.9615,
+    "precision": 0.9573826947912183,
+    "recall": 0.9596548004314994,
+    "f1": 0.9585174011421183,
+    "roc_auc": 0.9954231700733207,
+    "confusion_matrix": [
+      [
+        5167,
+        198
+      ],
+      [
+        187,
+        4448
+      ]
+    ],
+    "classification_report": {
+      "No heart disease": {
+        "precision": 0.9650728427344042,
+        "recall": 0.96309412861137,
+        "f1-score": 0.9640824703796996,
+        "support": 5365.0
+      },
+      "Heart disease": {
+        "precision": 0.9573826947912183,
+        "recall": 0.9596548004314994,
+        "f1-score": 0.9585174011421183,
+        "support": 4635.0
+      },
+      "accuracy": 0.9615,
+      "macro avg": {
+        "precision": 0.9612277687628112,
+        "recall": 0.9613744645214347,
+        "f1-score": 0.9612999357609089,
+        "support": 10000.0
+      },
+      "weighted avg": {
+        "precision": 0.9615084591627375,
+        "recall": 0.9615,
+        "f1-score": 0.9615030607880806,
+        "support": 10000.0
+      }
+    }
+  },
+  "model_comparison": [
+    {
+      "model": "SVM (RBF)",
+      "cv_accuracy": 0.9594999999999999,
+      "test_accuracy": 0.9615,
+      "precision": 0.9573826947912183,
+      "recall": 0.9596548004314994,
+      "f1": 0.9585174011421183,
+      "roc_auc": 0.9954231700733207
+    }
+  ],
+  "relationships": {
+    "Age": {
+      "pearson_correlation": 0.38014337298338796
+    },
+    "Hypertension": {
+      "0": {
+        "count": 35019,
+        "heart_disease_rate": 0.33147719809246406
+      },
+      "1": {
+        "count": 14981,
+        "heart_disease_rate": 0.7719778385955544
+      }
+    },
+    "Diabetes": {
+      "0": {
+        "count": 40037,
+        "heart_disease_rate": 0.3793241251842046
+      },
+      "1": {
+        "count": 9963,
+        "heart_disease_rate": 0.8015657934357121
+      }
+    },
+    "Previous_Heart_Attack": {
+      "0": {
+        "count": 45036,
+        "heart_disease_rate": 0.42315036859401367
+      },
+      "1": {
+        "count": 4964,
+        "heart_disease_rate": 0.8291700241740532
+      }
+    },
+    "Cholesterol_Total": {
+      "pearson_correlation": 0.3740847254017831
+    }
+  },
+  "synthetic_rule_audit": {
+    "features": [
+      "Age",
+      "Hypertension",
+      "Diabetes",
+      "Previous_Heart_Attack",
+      "Cholesterol_Total"
+    ],
+    "recovered_rule": "Heart_Disease = 1 when at least two conditions are true: Age > 55, Hypertension = 1, Diabetes = 1, Previous_Heart_Attack = 1, Cholesterol_Total > 240.",
+    "recovered_rule_training_accuracy": 1.0,
+    "recovered_rule_matching_rows": 40000,
+    "audited_training_rows": 40000,
+    "interpretation": "This is evidence of deterministic synthetic label generation, not target leakage: all inputs are legitimate pre-outcome feature columns and the target itself is excluded."
+  },
+  "runtime_seconds": 476.540795399982
+}
